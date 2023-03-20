@@ -1,12 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { TailwindProvider } from 'tailwind-rn';
+import utilities from './tailwind.json';
+import CustomersScreen from './screens/CustomersScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import RootNavigator from './navigator/RootNavigator';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  gql,
+} from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'https://publicba6cc52009b40d00.stepzen.net/api/exiled-flee/__graphql',
+  cache: new InMemoryCache(),
+});
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    // @ts-ignore
+    <TailwindProvider utilities={utilities}>
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </ApolloProvider>
+    </TailwindProvider>
   );
 }
 
